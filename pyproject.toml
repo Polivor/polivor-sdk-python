@@ -22,3 +22,10 @@ polivor = ["py.typed", "generated/py.typed"]
 Homepage = "https://polivor.com/docs"
 Repository = "https://github.com/Polivor/polivor-sdk-python"
 Issues = "https://github.com/Polivor/polivor-sdk-python/issues"
+
+[tool.coverage.run]
+include = ["polivor/__init__.py", "polivor/client.py", "polivor/verify.py"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true

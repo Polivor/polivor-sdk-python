@@ -22,7 +22,8 @@ jobs:
         run: |
           package_version="$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
           test "v$package_version" = "$GITHUB_REF_NAME"
-      - run: $RUNNER_TEMP/venv/bin/python -m unittest discover -s tests
+      - run: $RUNNER_TEMP/venv/bin/python -m coverage run -m unittest discover -s tests
+      - run: $RUNNER_TEMP/venv/bin/python -m coverage report
       - run: |
           $RUNNER_TEMP/venv/bin/python -m build
           $RUNNER_TEMP/venv/bin/twine check dist/*

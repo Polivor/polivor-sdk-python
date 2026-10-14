@@ -27,7 +27,8 @@ jobs:
         run: |
           PATH="$RUNNER_TEMP/venv/bin:$PATH" ./generate.sh
           git diff --exit-code -- .
-      - run: $RUNNER_TEMP/venv/bin/python -m unittest discover -s tests
+      - run: $RUNNER_TEMP/venv/bin/python -m coverage run -m unittest discover -s tests
+      - run: $RUNNER_TEMP/venv/bin/python -m coverage report
 
   secrets:
     runs-on: ubuntu-24.04
