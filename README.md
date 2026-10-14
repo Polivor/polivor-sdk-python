@@ -1,5 +1,7 @@
 # polivor
 
+[![ci](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml/badge.svg)](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml) [![license](https://img.shields.io/github/license/Polivor/polivor-sdk-python)](LICENSE)
+
 Python client for the Polivor API, generated from its OpenAPI file. The package holds no keys or secrets: you bring your own API key.
 
 ```python
@@ -20,3 +22,7 @@ claims = verify_authorization(result.authorization.jws, audience="your-enforceme
 ## Development
 
 `openapi/polivor.yaml` is a copy of the published API description. A scheduled workflow refreshes it and opens a pull request when it changes. Generated code is never edited by hand.
+
+## License
+
+Apache-2.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE).
