@@ -24,7 +24,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "delete",
-        "url": "/v1/webhook",
+        "url": "/v1/webhooks",
     }
 
 
