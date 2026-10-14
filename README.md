@@ -1,6 +1,6 @@
 # polivor
 
-[![ci](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml/badge.svg)](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml) [![license](https://img.shields.io/github/license/Polivor/polivor-sdk-python)](LICENSE)
+[![ci](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml/badge.svg)](https://github.com/Polivor/polivor-sdk-python/actions/workflows/ci.yml) [![license](https://img.shields.io/github/license/Polivor/polivor-sdk-python)](LICENSE) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Polivor/polivor-sdk-python/badge)](https://scorecard.dev/viewer/?uri=github.com/Polivor/polivor-sdk-python)
 
 Python client for the Polivor API, generated from its OpenAPI file. The package holds no keys or secrets: you bring your own API key.
 
