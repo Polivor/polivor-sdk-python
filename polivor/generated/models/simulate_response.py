@@ -15,6 +15,7 @@ from typing import Literal, cast
 
 if TYPE_CHECKING:
   from ..models.check import Check
+  from ..models.denial import Denial
   from ..models.simulate_response_mandate import SimulateResponseMandate
 
 
@@ -34,6 +35,10 @@ class SimulateResponse:
             reasons (list[Any]):
             checks (list[Check]):
             policy_version (int): 0 when no policy applied
+            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
+                and each sentence says what to do, never why.
+                `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
+                (UNAVAILABLE).
             mandate (SimulateResponseMandate | Unset):
      """
 
@@ -42,6 +47,7 @@ class SimulateResponse:
     reasons: list[Any]
     checks: list[Check]
     policy_version: int
+    denial: Denial | Unset = UNSET
     mandate: SimulateResponseMandate | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -51,6 +57,7 @@ class SimulateResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         from ..models.simulate_response_mandate import SimulateResponseMandate # noqa: PLC0415
         simulated = self.simulated
 
@@ -73,6 +80,10 @@ class SimulateResponse:
 
         policy_version = self.policy_version
 
+        denial: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.denial, Unset):
+            denial = self.denial.to_dict()
+
         mandate: dict[str, Any] | Unset = UNSET
         if not isinstance(self.mandate, Unset):
             mandate = self.mandate.to_dict()
@@ -87,6 +98,8 @@ class SimulateResponse:
             "checks": checks,
             "policy_version": policy_version,
         })
+        if denial is not UNSET:
+            field_dict["denial"] = denial
         if mandate is not UNSET:
             field_dict["mandate"] = mandate
 
@@ -97,6 +110,7 @@ class SimulateResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         from ..models.simulate_response_mandate import SimulateResponseMandate # noqa: PLC0415
         d = dict(src_dict)
         simulated = cast(Literal[True] , d.pop("simulated"))
@@ -131,6 +145,16 @@ class SimulateResponse:
 
         policy_version = d.pop("policy_version")
 
+        _denial = d.pop("denial", UNSET)
+        denial: Denial | Unset
+        if isinstance(_denial,  Unset):
+            denial = UNSET
+        else:
+            denial = Denial.from_dict(_denial)
+
+
+
+
         _mandate = d.pop("mandate", UNSET)
         mandate: SimulateResponseMandate | Unset
         if isinstance(_mandate,  Unset):
@@ -147,6 +171,7 @@ class SimulateResponse:
             reasons=reasons,
             checks=checks,
             policy_version=policy_version,
+            denial=denial,
             mandate=mandate,
         )
 

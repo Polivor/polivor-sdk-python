@@ -16,6 +16,8 @@ from uuid import UUID
 
 if TYPE_CHECKING:
   from ..models.authorization_artifact import AuthorizationArtifact
+  from ..models.check import Check
+  from ..models.denial import Denial
 
 
 
@@ -27,19 +29,31 @@ T = TypeVar("T", bound="DecisionStatus")
 
 @_attrs_define
 class DecisionStatus:
-    """ 
+    """ Every caller gets the status and, when nothing is allowed, the coarse `denial`. Only an admin key also gets
+    `reasons`, `checks` and `policy_version` (ADR-025);
+    an agent key never does.
+
         Attributes:
             decision_id (UUID):
             outcome (DecisionStatusOutcome):
             status (DecisionStatusStatus):
-            reasons (list[Any] | Unset):
+            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
+                and each sentence says what to do, never why.
+                `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
+                (UNAVAILABLE).
+            reasons (list[Any] | Unset): Admin keys only
+            checks (list[Check] | Unset): Admin keys only
+            policy_version (int | Unset): Admin keys only
             authorization (AuthorizationArtifact | Unset):
      """
 
     decision_id: UUID
     outcome: DecisionStatusOutcome
     status: DecisionStatusStatus
+    denial: Denial | Unset = UNSET
     reasons: list[Any] | Unset = UNSET
+    checks: list[Check] | Unset = UNSET
+    policy_version: int | Unset = UNSET
     authorization: AuthorizationArtifact | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -49,11 +63,17 @@ class DecisionStatus:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.authorization_artifact import AuthorizationArtifact # noqa: PLC0415
+        from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         decision_id = str(self.decision_id)
 
         outcome = self.outcome.value
 
         status = self.status.value
+
+        denial: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.denial, Unset):
+            denial = self.denial.to_dict()
 
         reasons: list[Any] | Unset = UNSET
         if not isinstance(self.reasons, Unset):
@@ -64,6 +84,17 @@ class DecisionStatus:
                 reasons.append(reasons_item)
 
 
+
+        checks: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.checks, Unset):
+            checks = []
+            for checks_item_data in self.checks:
+                checks_item = checks_item_data.to_dict()
+                checks.append(checks_item)
+
+
+
+        policy_version = self.policy_version
 
         authorization: dict[str, Any] | Unset = UNSET
         if not isinstance(self.authorization, Unset):
@@ -77,8 +108,14 @@ class DecisionStatus:
             "outcome": outcome,
             "status": status,
         })
+        if denial is not UNSET:
+            field_dict["denial"] = denial
         if reasons is not UNSET:
             field_dict["reasons"] = reasons
+        if checks is not UNSET:
+            field_dict["checks"] = checks
+        if policy_version is not UNSET:
+            field_dict["policy_version"] = policy_version
         if authorization is not UNSET:
             field_dict["authorization"] = authorization
 
@@ -89,6 +126,8 @@ class DecisionStatus:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.authorization_artifact import AuthorizationArtifact # noqa: PLC0415
+        from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         d = dict(src_dict)
         decision_id = UUID(d.pop("decision_id"))
 
@@ -101,6 +140,16 @@ class DecisionStatus:
 
 
         status = DecisionStatusStatus(d.pop("status"))
+
+
+
+
+        _denial = d.pop("denial", UNSET)
+        denial: Denial | Unset
+        if isinstance(_denial,  Unset):
+            denial = UNSET
+        else:
+            denial = Denial.from_dict(_denial)
 
 
 
@@ -118,6 +167,20 @@ class DecisionStatus:
                 reasons.append(reasons_item)
 
 
+        _checks = d.pop("checks", UNSET)
+        checks: list[Check] | Unset = UNSET
+        if _checks is not UNSET:
+            checks = []
+            for checks_item_data in _checks:
+                checks_item = Check.from_dict(checks_item_data)
+
+
+
+                checks.append(checks_item)
+
+
+        policy_version = d.pop("policy_version", UNSET)
+
         _authorization = d.pop("authorization", UNSET)
         authorization: AuthorizationArtifact | Unset
         if isinstance(_authorization,  Unset):
@@ -132,7 +195,10 @@ class DecisionStatus:
             decision_id=decision_id,
             outcome=outcome,
             status=status,
+            denial=denial,
             reasons=reasons,
+            checks=checks,
+            policy_version=policy_version,
             authorization=authorization,
         )
 

@@ -8,37 +8,44 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..models.user_invite_role import UserInviteRole
+from uuid import UUID
 
 
 
 
 
 
-T = TypeVar("T", bound="RegisterAgentVersionBody")
+T = TypeVar("T", bound="UserInvite")
 
 
 
 @_attrs_define
-class RegisterAgentVersionBody:
+class UserInvite:
     """ 
         Attributes:
-            version (str):
+            person_id (UUID):
+            role (UserInviteRole):
      """
 
-    version: str
+    person_id: UUID
+    role: UserInviteRole
 
 
 
 
 
     def to_dict(self) -> dict[str, Any]:
-        version = self.version
+        person_id = str(self.person_id)
+
+        role = self.role.value
 
 
         field_dict: dict[str, Any] = {}
 
         field_dict.update({
-            "version": version,
+            "person_id": person_id,
+            "role": role,
         })
 
         return field_dict
@@ -48,11 +55,20 @@ class RegisterAgentVersionBody:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        version = d.pop("version")
+        person_id = UUID(d.pop("person_id"))
 
-        register_agent_version_body = cls(
-            version=version,
+
+
+
+        role = UserInviteRole(d.pop("role"))
+
+
+
+
+        user_invite = cls(
+            person_id=person_id,
+            role=role,
         )
 
-        return register_agent_version_body
+        return user_invite
 

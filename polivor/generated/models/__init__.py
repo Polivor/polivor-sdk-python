@@ -28,18 +28,30 @@ from .beneficiary_ref import BeneficiaryRef
 from .beneficiary_status import BeneficiaryStatus
 from .beneficiary_update import BeneficiaryUpdate
 from .beneficiary_update_status import BeneficiaryUpdateStatus
+from .change_agent_owner_body import ChangeAgentOwnerBody
 from .check import Check
 from .check_detail import CheckDetail
 from .check_result import CheckResult
 from .decision_status import DecisionStatus
 from .decision_status_outcome import DecisionStatusOutcome
 from .decision_status_status import DecisionStatusStatus
+from .denial import Denial
+from .denial_code import DenialCode
 from .evidence_bundle import EvidenceBundle
 from .evidence_bundle_authorizations_item import EvidenceBundleAuthorizationsItem
 from .evidence_row import EvidenceRow
 from .evidence_row_payload import EvidenceRowPayload
 from .execution_report import ExecutionReport
 from .execution_report_status import ExecutionReportStatus
+from .identity_provider import IdentityProvider
+from .identity_provider_create import IdentityProviderCreate
+from .identity_provider_create_protocol import IdentityProviderCreateProtocol
+from .identity_provider_create_required_claim import IdentityProviderCreateRequiredClaim
+from .identity_provider_domains_item import IdentityProviderDomainsItem
+from .identity_provider_protocol import IdentityProviderProtocol
+from .identity_provider_required_claim import IdentityProviderRequiredClaim
+from .identity_provider_service_provider import IdentityProviderServiceProvider
+from .identity_provider_status import IdentityProviderStatus
 from .import_ap_2_mandate_body import ImportAp2MandateBody
 from .json_rpc_message import JsonRpcMessage
 from .json_rpc_message_error import JsonRpcMessageError
@@ -52,14 +64,17 @@ from .mandate import Mandate
 from .mandate_body import MandateBody
 from .mandate_source import MandateSource
 from .mandate_status import MandateStatus
+from .mandate_version_info import MandateVersionInfo
 from .mcp_message_mcp_protocol_version import McpMessageMCPProtocolVersion
+from .person import Person
+from .person_create import PersonCreate
 from .policy_version import PolicyVersion
 from .policy_version_status import PolicyVersionStatus
 from .principal import Principal
 from .principal_create import PrincipalCreate
 from .problem import Problem
 from .problem_errors_item import ProblemErrorsItem
-from .register_agent_version_body import RegisterAgentVersionBody
+from .revoke_user_sessions_response_200 import RevokeUserSessionsResponse200
 from .signals import Signals
 from .simulate_request import SimulateRequest
 from .simulate_response import SimulateResponse
@@ -67,6 +82,10 @@ from .simulate_response_mandate import SimulateResponseMandate
 from .simulate_response_outcome import SimulateResponseOutcome
 from .template_params import TemplateParams
 from .trusted_issuer import TrustedIssuer
+from .user_invite import UserInvite
+from .user_invite_role import UserInviteRole
+from .user_role import UserRole
+from .user_role_role import UserRoleRole
 from .webhook_configured import WebhookConfigured
 from .webhook_set import WebhookSet
 from .webhook_status import WebhookStatus
@@ -100,18 +119,30 @@ __all__ = (
     "BeneficiaryStatus",
     "BeneficiaryUpdate",
     "BeneficiaryUpdateStatus",
+    "ChangeAgentOwnerBody",
     "Check",
     "CheckDetail",
     "CheckResult",
     "DecisionStatus",
     "DecisionStatusOutcome",
     "DecisionStatusStatus",
+    "Denial",
+    "DenialCode",
     "EvidenceBundle",
     "EvidenceBundleAuthorizationsItem",
     "EvidenceRow",
     "EvidenceRowPayload",
     "ExecutionReport",
     "ExecutionReportStatus",
+    "IdentityProvider",
+    "IdentityProviderCreate",
+    "IdentityProviderCreateProtocol",
+    "IdentityProviderCreateRequiredClaim",
+    "IdentityProviderDomainsItem",
+    "IdentityProviderProtocol",
+    "IdentityProviderRequiredClaim",
+    "IdentityProviderServiceProvider",
+    "IdentityProviderStatus",
     "ImportAp2MandateBody",
     "JsonRpcMessage",
     "JsonRpcMessageError",
@@ -124,14 +155,17 @@ __all__ = (
     "MandateBody",
     "MandateSource",
     "MandateStatus",
+    "MandateVersionInfo",
     "McpMessageMCPProtocolVersion",
+    "Person",
+    "PersonCreate",
     "PolicyVersion",
     "PolicyVersionStatus",
     "Principal",
     "PrincipalCreate",
     "Problem",
     "ProblemErrorsItem",
-    "RegisterAgentVersionBody",
+    "RevokeUserSessionsResponse200",
     "Signals",
     "SimulateRequest",
     "SimulateResponse",
@@ -139,6 +173,10 @@ __all__ = (
     "SimulateResponseOutcome",
     "TemplateParams",
     "TrustedIssuer",
+    "UserInvite",
+    "UserInviteRole",
+    "UserRole",
+    "UserRoleRole",
     "WebhookConfigured",
     "WebhookSet",
     "WebhookStatus",
