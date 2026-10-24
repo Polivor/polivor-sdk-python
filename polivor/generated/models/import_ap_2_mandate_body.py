@@ -29,7 +29,7 @@ class ImportAp2MandateBody:
             issuer_id (UUID):
             principal_id (UUID):
             agent_id (UUID):
-            allowed_agent_versions (list[str] | Unset):
+            approver_person_id (UUID):
             acknowledge_unenforced (list[str] | Unset): Constraint types the admin accepts not to have enforced natively,
                 e.g. payment.allowed_payees
      """
@@ -38,7 +38,7 @@ class ImportAp2MandateBody:
     issuer_id: UUID
     principal_id: UUID
     agent_id: UUID
-    allowed_agent_versions: list[str] | Unset = UNSET
+    approver_person_id: UUID
     acknowledge_unenforced: list[str] | Unset = UNSET
 
 
@@ -54,11 +54,7 @@ class ImportAp2MandateBody:
 
         agent_id = str(self.agent_id)
 
-        allowed_agent_versions: list[str] | Unset = UNSET
-        if not isinstance(self.allowed_agent_versions, Unset):
-            allowed_agent_versions = self.allowed_agent_versions
-
-
+        approver_person_id = str(self.approver_person_id)
 
         acknowledge_unenforced: list[str] | Unset = UNSET
         if not isinstance(self.acknowledge_unenforced, Unset):
@@ -74,9 +70,8 @@ class ImportAp2MandateBody:
             "issuer_id": issuer_id,
             "principal_id": principal_id,
             "agent_id": agent_id,
+            "approver_person_id": approver_person_id,
         })
-        if allowed_agent_versions is not UNSET:
-            field_dict["allowed_agent_versions"] = allowed_agent_versions
         if acknowledge_unenforced is not UNSET:
             field_dict["acknowledge_unenforced"] = acknowledge_unenforced
 
@@ -104,7 +99,9 @@ class ImportAp2MandateBody:
 
 
 
-        allowed_agent_versions = cast(list[str], d.pop("allowed_agent_versions", UNSET))
+        approver_person_id = UUID(d.pop("approver_person_id"))
+
+
 
 
         acknowledge_unenforced = cast(list[str], d.pop("acknowledge_unenforced", UNSET))
@@ -115,7 +112,7 @@ class ImportAp2MandateBody:
             issuer_id=issuer_id,
             principal_id=principal_id,
             agent_id=agent_id,
-            allowed_agent_versions=allowed_agent_versions,
+            approver_person_id=approver_person_id,
             acknowledge_unenforced=acknowledge_unenforced,
         )
 

@@ -24,11 +24,12 @@ class SimulateResponseMandate:
     """ 
         Attributes:
             id (UUID):
-            version (int):
+            version (str): major.minor, for example 2.1. A major version changes the rules, a minor version only the
+                validity dates.
      """
 
     id: UUID
-    version: int
+    version: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
 

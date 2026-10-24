@@ -17,7 +17,7 @@ if TYPE_CHECKING:
   from ..models.authorization_artifact import AuthorizationArtifact
   from ..models.authorize_response_evidence import AuthorizeResponseEvidence
   from ..models.authorize_response_mandate import AuthorizeResponseMandate
-  from ..models.check import Check
+  from ..models.denial import Denial
 
 
 
@@ -29,29 +29,27 @@ T = TypeVar("T", bound="AuthorizeResponse")
 
 @_attrs_define
 class AuthorizeResponse:
-    """ 
+    """ The answer to an agent. It has no reasons, no checks and no policy version (ADR-025); a person sees those through
+    the admin key, the console or the evidence.
+
         Attributes:
             decision_id (UUID):
             outcome (AuthorizeResponseOutcome):
-            reasons (list[Any]):
-            checks (list[Check]):
-            policy_version (int):
-            evidence (AuthorizeResponseEvidence): Absent on simulate
-            simulated (bool | Unset):
+            evidence (AuthorizeResponseEvidence):
+            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
+                and each sentence says what to do, never why.
+                `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
+                (UNAVAILABLE).
             mandate (AuthorizeResponseMandate | Unset):
             authorization (AuthorizationArtifact | Unset):
      """
 
     decision_id: UUID
     outcome: AuthorizeResponseOutcome
-    reasons: list[Any]
-    checks: list[Check]
-    policy_version: int
     evidence: AuthorizeResponseEvidence
-    simulated: bool | Unset = UNSET
+    denial: Denial | Unset = UNSET
     mandate: AuthorizeResponseMandate | Unset = UNSET
     authorization: AuthorizationArtifact | Unset = UNSET
-    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
 
 
@@ -61,31 +59,16 @@ class AuthorizeResponse:
         from ..models.authorization_artifact import AuthorizationArtifact # noqa: PLC0415
         from ..models.authorize_response_evidence import AuthorizeResponseEvidence # noqa: PLC0415
         from ..models.authorize_response_mandate import AuthorizeResponseMandate # noqa: PLC0415
-        from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         decision_id = str(self.decision_id)
 
         outcome = self.outcome.value
 
-        reasons = []
-        for reasons_item_data in self.reasons:
-            reasons_item: Any
-            reasons_item = reasons_item_data
-            reasons.append(reasons_item)
-
-
-
-        checks = []
-        for checks_item_data in self.checks:
-            checks_item = checks_item_data.to_dict()
-            checks.append(checks_item)
-
-
-
-        policy_version = self.policy_version
-
         evidence = self.evidence.to_dict()
 
-        simulated = self.simulated
+        denial: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.denial, Unset):
+            denial = self.denial.to_dict()
 
         mandate: dict[str, Any] | Unset = UNSET
         if not isinstance(self.mandate, Unset):
@@ -97,17 +80,14 @@ class AuthorizeResponse:
 
 
         field_dict: dict[str, Any] = {}
-        field_dict.update(self.additional_properties)
+
         field_dict.update({
             "decision_id": decision_id,
             "outcome": outcome,
-            "reasons": reasons,
-            "checks": checks,
-            "policy_version": policy_version,
             "evidence": evidence,
         })
-        if simulated is not UNSET:
-            field_dict["simulated"] = simulated
+        if denial is not UNSET:
+            field_dict["denial"] = denial
         if mandate is not UNSET:
             field_dict["mandate"] = mandate
         if authorization is not UNSET:
@@ -122,7 +102,7 @@ class AuthorizeResponse:
         from ..models.authorization_artifact import AuthorizationArtifact # noqa: PLC0415
         from ..models.authorize_response_evidence import AuthorizeResponseEvidence # noqa: PLC0415
         from ..models.authorize_response_mandate import AuthorizeResponseMandate # noqa: PLC0415
-        from ..models.check import Check # noqa: PLC0415
+        from ..models.denial import Denial # noqa: PLC0415
         d = dict(src_dict)
         decision_id = UUID(d.pop("decision_id"))
 
@@ -134,35 +114,20 @@ class AuthorizeResponse:
 
 
 
-        reasons = []
-        _reasons = d.pop("reasons")
-        for reasons_item_data in (_reasons):
-            def _parse_reasons_item(data: object) -> Any:
-                return cast(Any, data)
-
-            reasons_item = _parse_reasons_item(reasons_item_data)
-
-            reasons.append(reasons_item)
-
-
-        checks = []
-        _checks = d.pop("checks")
-        for checks_item_data in (_checks):
-            checks_item = Check.from_dict(checks_item_data)
-
-
-
-            checks.append(checks_item)
-
-
-        policy_version = d.pop("policy_version")
-
         evidence = AuthorizeResponseEvidence.from_dict(d.pop("evidence"))
 
 
 
 
-        simulated = d.pop("simulated", UNSET)
+        _denial = d.pop("denial", UNSET)
+        denial: Denial | Unset
+        if isinstance(_denial,  Unset):
+            denial = UNSET
+        else:
+            denial = Denial.from_dict(_denial)
+
+
+
 
         _mandate = d.pop("mandate", UNSET)
         mandate: AuthorizeResponseMandate | Unset
@@ -187,31 +152,11 @@ class AuthorizeResponse:
         authorize_response = cls(
             decision_id=decision_id,
             outcome=outcome,
-            reasons=reasons,
-            checks=checks,
-            policy_version=policy_version,
             evidence=evidence,
-            simulated=simulated,
+            denial=denial,
             mandate=mandate,
             authorization=authorization,
         )
 
-
-        authorize_response.additional_properties = d
         return authorize_response
 
-    @property
-    def additional_keys(self) -> list[str]:
-        return list(self.additional_properties.keys())
-
-    def __getitem__(self, key: str) -> Any:
-        return self.additional_properties[key]
-
-    def __setitem__(self, key: str, value: Any) -> None:
-        self.additional_properties[key] = value
-
-    def __delitem__(self, key: str) -> None:
-        del self.additional_properties[key]
-
-    def __contains__(self, key: str) -> bool:
-        return key in self.additional_properties

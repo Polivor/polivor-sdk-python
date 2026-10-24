@@ -25,14 +25,12 @@ class AgentCreate:
         Attributes:
             name (str):
             principal_id (UUID):
-            owner_email (str):
-            version (str):
+            owner_person_id (UUID):
      """
 
     name: str
     principal_id: UUID
-    owner_email: str
-    version: str
+    owner_person_id: UUID
 
 
 
@@ -43,9 +41,7 @@ class AgentCreate:
 
         principal_id = str(self.principal_id)
 
-        owner_email = self.owner_email
-
-        version = self.version
+        owner_person_id = str(self.owner_person_id)
 
 
         field_dict: dict[str, Any] = {}
@@ -53,8 +49,7 @@ class AgentCreate:
         field_dict.update({
             "name": name,
             "principal_id": principal_id,
-            "owner_email": owner_email,
-            "version": version,
+            "owner_person_id": owner_person_id,
         })
 
         return field_dict
@@ -71,15 +66,15 @@ class AgentCreate:
 
 
 
-        owner_email = d.pop("owner_email")
+        owner_person_id = UUID(d.pop("owner_person_id"))
 
-        version = d.pop("version")
+
+
 
         agent_create = cls(
             name=name,
             principal_id=principal_id,
-            owner_email=owner_email,
-            version=version,
+            owner_person_id=owner_person_id,
         )
 
         return agent_create

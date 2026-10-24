@@ -19,7 +19,7 @@ from uuid import UUID
 def _get_kwargs(
     id: UUID,
     *,
-    version: int | Unset = UNSET,
+    version: str | Unset = UNSET,
 
 ) -> dict[str, Any]:
     
@@ -93,15 +93,16 @@ def sync_detailed(
     id: UUID,
     *,
     client: AuthenticatedClient | Client,
-    version: int | Unset = UNSET,
+    version: str | Unset = UNSET,
 
 ) -> Response[Mandate | Problem]:
-    """ The version in force, or any other version with ?version=n (versions are immutable and stay
+    """ The version in force, or any other version with ?version=2.1 (versions are immutable and stay
     readable)
 
     Args:
         id (UUID):
-        version (int | Unset):
+        version (str | Unset): major.minor, for example 2.1. A major version changes the rules, a
+            minor version only the validity dates.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -128,15 +129,16 @@ def sync(
     id: UUID,
     *,
     client: AuthenticatedClient | Client,
-    version: int | Unset = UNSET,
+    version: str | Unset = UNSET,
 
 ) -> Mandate | Problem | None:
-    """ The version in force, or any other version with ?version=n (versions are immutable and stay
+    """ The version in force, or any other version with ?version=2.1 (versions are immutable and stay
     readable)
 
     Args:
         id (UUID):
-        version (int | Unset):
+        version (str | Unset): major.minor, for example 2.1. A major version changes the rules, a
+            minor version only the validity dates.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -158,15 +160,16 @@ async def asyncio_detailed(
     id: UUID,
     *,
     client: AuthenticatedClient | Client,
-    version: int | Unset = UNSET,
+    version: str | Unset = UNSET,
 
 ) -> Response[Mandate | Problem]:
-    """ The version in force, or any other version with ?version=n (versions are immutable and stay
+    """ The version in force, or any other version with ?version=2.1 (versions are immutable and stay
     readable)
 
     Args:
         id (UUID):
-        version (int | Unset):
+        version (str | Unset): major.minor, for example 2.1. A major version changes the rules, a
+            minor version only the validity dates.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -193,15 +196,16 @@ async def asyncio(
     id: UUID,
     *,
     client: AuthenticatedClient | Client,
-    version: int | Unset = UNSET,
+    version: str | Unset = UNSET,
 
 ) -> Mandate | Problem | None:
-    """ The version in force, or any other version with ?version=n (versions are immutable and stay
+    """ The version in force, or any other version with ?version=2.1 (versions are immutable and stay
     readable)
 
     Args:
         id (UUID):
-        version (int | Unset):
+        version (str | Unset): major.minor, for example 2.1. A major version changes the rules, a
+            minor version only the validity dates.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

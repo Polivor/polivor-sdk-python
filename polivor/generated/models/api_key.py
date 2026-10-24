@@ -29,7 +29,7 @@ class ApiKey:
         Attributes:
             id (UUID):
             role (ApiKeyRole):
-            prefix (str): The non-secret part (pv_test_<prefix>) that identifies the key in logs
+            prefix (str): The non-secret part (pv_test_<prefix> or pv_live_<prefix>) that identifies the key in logs
             created_at (datetime.datetime):
             agent_id (None | str | Unset):
             revoked_at (datetime.datetime | None | Unset):
