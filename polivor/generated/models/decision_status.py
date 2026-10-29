@@ -30,15 +30,15 @@ T = TypeVar("T", bound="DecisionStatus")
 @_attrs_define
 class DecisionStatus:
     """ Every caller gets the status and, when nothing is allowed, the coarse `denial`. Only an admin key also gets
-    `reasons`, `checks` and `policy_version` (ADR-025);
+    `reasons`, `checks` and `policy_version`;
     an agent key never does.
 
         Attributes:
             decision_id (UUID):
             outcome (DecisionStatusOutcome):
             status (DecisionStatusStatus):
-            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
-                and each sentence says what to do, never why.
+            denial (Denial | Unset): What an agent is told when nothing was allowed. The list of codes is closed and each
+                sentence says what to do, never why.
                 `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
                 (UNAVAILABLE).
             reasons (list[Any] | Unset): Admin keys only
