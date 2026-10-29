@@ -6,4 +6,4 @@ PyJWT[crypto]==2.15.1
 cryptography==50.0.2
 build==1.6.1
 twine==7.0.0
-coverage==7.16.2
+coverage==7.17.0
