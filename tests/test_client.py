@@ -2,6 +2,7 @@ import json
 import os
 import time
 import unittest
+from unittest import mock
 from base64 import urlsafe_b64encode
 
 import httpx
@@ -21,7 +22,7 @@ TOKEN_TYPE = "polivor-authz+jwt"
 def signed_token(token_type=TOKEN_TYPE, audience=AUDIENCE, lifetime_seconds=300):
     private_key = Ed25519PrivateKey.generate()
     raw_public = private_key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
-    jwks = {"keys": [{"kty": "OKP", "crv": "Ed25519", "kid": KEY_ID, "alg": "EdDSA",
+    jwks = {"keys": [{"kty": "OKP", "crv": "Ed25519", "kid": KEY_ID, "alg": "EdDSA", "use": "authz",
                       "x": urlsafe_b64encode(raw_public).rstrip(b"=").decode()}]}
     claims = {"aud": audience, "exp": int(time.time()) + lifetime_seconds, "action_sha256": "abc"}
     token = jwt.encode(claims, private_key, algorithm="EdDSA", headers={"typ": token_type, "kid": KEY_ID})
@@ -77,6 +78,43 @@ class VerifyAuthorizationTest(unittest.TestCase):
         forged_payload = urlsafe_b64encode(json.dumps({"aud": AUDIENCE, "exp": 9999999999, "action_sha256": "evil"}).encode()).rstrip(b"=").decode()
         with self.assertRaises(jwt.InvalidTokenError):
             verify_authorization(f"{header}.{forged_payload}.{signature}", AUDIENCE, jwks=jwks)
+
+
+def platform_key_set():
+    """The shape the platform publishes: an authorization key and an evidence key, labelled use authz and use evidence."""
+    pairs = {}
+    entries = []
+    for key_id, use in (("authz-signing-v1", "authz"), ("evidence-signing-v1", "evidence")):
+        private_key = Ed25519PrivateKey.generate()
+        raw_public = private_key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+        pairs[use] = (key_id, private_key)
+        entries.append({"kty": "OKP", "crv": "Ed25519", "kid": key_id, "use": use, "alg": "EdDSA", "x": urlsafe_b64encode(raw_public).rstrip(b"=").decode()})
+    def sign(use):
+        key_id, private_key = pairs[use]
+        return jwt.encode({"aud": AUDIENCE, "exp": int(time.time()) + 300, "action_sha256": "abc"}, private_key, algorithm="EdDSA", headers={"typ": TOKEN_TYPE, "kid": key_id})
+    return {"keys": entries}, sign
+
+
+class PlatformKeySetTest(unittest.TestCase):
+    def fetched(self, key_set, status=200):
+        request = httpx.Request("GET", PRODUCTION_BASE_URL + "/.well-known/jwks.json")
+        return mock.patch("polivor.verify.httpx.get", return_value=httpx.Response(status, json=key_set, request=request))
+
+    def test_verifies_against_the_key_set_the_platform_publishes(self):
+        key_set, sign = platform_key_set()
+        with self.fetched(key_set) as fetch:
+            self.assertEqual(verify_authorization(sign("authz"), AUDIENCE)["action_sha256"], "abc")
+        self.assertEqual(fetch.call_args.args[0], PRODUCTION_BASE_URL + "/.well-known/jwks.json")
+
+    def test_refuses_a_token_signed_by_the_evidence_key(self):
+        key_set, sign = platform_key_set()
+        with self.fetched(key_set), self.assertRaises(jwt.InvalidKeyError):
+            verify_authorization(sign("evidence"), AUDIENCE)
+
+    def test_says_so_when_the_key_set_cannot_be_fetched(self):
+        key_set, sign = platform_key_set()
+        with self.fetched({}, status=503), self.assertRaises(httpx.HTTPStatusError):
+            verify_authorization(sign("authz"), AUDIENCE)
 
 
 if __name__ == "__main__":

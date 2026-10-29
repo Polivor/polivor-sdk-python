@@ -26,6 +26,7 @@ claims = verify_authorization(result.authorization.jws, audience="your-enforceme
 - `POST /v1/authorize` answers an agent with `denial` (`code`, `message`, `retryable`) when nothing was allowed. The codes are `AGENT_NOT_ENABLED`, `OUTSIDE_AUTHORITY`, `APPROVAL_REQUIRED`, `UNAVAILABLE`, `APPROVER_DENIED` and `APPROVAL_EXPIRED`. An agent's answer has no `reasons`, `checks` or `policy_version`; a person sees them through an admin key, the console or the evidence.
 - An agent has no versions and one mandate, so the request names no mandate. Mandate versions are `major.minor` strings. An agent is created with `owner_person_id`.
 - New endpoints for people, users and identity providers.
+- `verify_authorization` could not read the key set the platform publishes in 0.1.0: Polivor labels its keys `use: authz` and `use: evidence`, and the standard key-set helpers skip anything that is not `sig`. It now picks the key by its id and by `use: authz`, as the verification guide describes, and refuses a token signed by the evidence key.
 
 The list of every change is in the pull request that regenerated the client.
 
