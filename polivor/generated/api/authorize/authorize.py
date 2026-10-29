@@ -130,6 +130,10 @@ def sync_detailed(
     (or by another agent), and IDEMPOTENCY_KEY_EXPIRED once the 24 h retention is over. A replay returns
     the stored response unchanged.
     REQUIRE_APPROVAL reserves no budget; budget is reserved when the approval is granted.
+    The answer never says why (ADR-025): no reasons, no checks, no policy version. When nothing is
+    allowed it carries a coarse `denial` with a code from a closed list,
+    a fixed sentence and `retryable`. A person sees the full explanation through the admin key, the
+    console or the evidence.
 
     Args:
         idempotency_key (str):
@@ -171,6 +175,10 @@ def sync(
     (or by another agent), and IDEMPOTENCY_KEY_EXPIRED once the 24 h retention is over. A replay returns
     the stored response unchanged.
     REQUIRE_APPROVAL reserves no budget; budget is reserved when the approval is granted.
+    The answer never says why (ADR-025): no reasons, no checks, no policy version. When nothing is
+    allowed it carries a coarse `denial` with a code from a closed list,
+    a fixed sentence and `retryable`. A person sees the full explanation through the admin key, the
+    console or the evidence.
 
     Args:
         idempotency_key (str):
@@ -207,6 +215,10 @@ async def asyncio_detailed(
     (or by another agent), and IDEMPOTENCY_KEY_EXPIRED once the 24 h retention is over. A replay returns
     the stored response unchanged.
     REQUIRE_APPROVAL reserves no budget; budget is reserved when the approval is granted.
+    The answer never says why (ADR-025): no reasons, no checks, no policy version. When nothing is
+    allowed it carries a coarse `denial` with a code from a closed list,
+    a fixed sentence and `retryable`. A person sees the full explanation through the admin key, the
+    console or the evidence.
 
     Args:
         idempotency_key (str):
@@ -248,6 +260,10 @@ async def asyncio(
     (or by another agent), and IDEMPOTENCY_KEY_EXPIRED once the 24 h retention is over. A replay returns
     the stored response unchanged.
     REQUIRE_APPROVAL reserves no budget; budget is reserved when the approval is granted.
+    The answer never says why (ADR-025): no reasons, no checks, no policy version. When nothing is
+    allowed it carries a coarse `denial` with a code from a closed list,
+    a fixed sentence and `retryable`. A person sees the full explanation through the admin key, the
+    console or the evidence.
 
     Args:
         idempotency_key (str):

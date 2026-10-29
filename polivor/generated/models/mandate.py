@@ -31,10 +31,15 @@ class Mandate:
             id (UUID):
             principal_id (UUID):
             agent_id (UUID):
-            status (MandateStatus):
-            current_version (int): The version in force (a DRAFT's current_version is the one activation will put in force)
-            latest_version (int): Highest version created; takes effect only when activated
-            version (int): The version whose body is returned
+            status (MandateStatus): REVOKED: the version in force was revoked and no version applies until a new one is
+                approved
+            current_version (str): major.minor, for example 2.1. A major version changes the rules, a minor version only the
+                validity dates.
+            latest_version (str): major.minor, for example 2.1. A major version changes the rules, a minor version only the
+                validity dates.
+            version (str): major.minor, for example 2.1. A major version changes the rules, a minor version only the
+                validity dates.
+            revoked (bool): Whether the returned version is revoked
             source (MandateSource):
             body (MandateBody): Native Financial Mandate body. The authoritative definition is docs/schema/financial-
                 mandate.v0.json; validated against it on write. A DRAFT imported from AP2 holds only the mapped fields until a
@@ -45,9 +50,10 @@ class Mandate:
     principal_id: UUID
     agent_id: UUID
     status: MandateStatus
-    current_version: int
-    latest_version: int
-    version: int
+    current_version: str
+    latest_version: str
+    version: str
+    revoked: bool
     source: MandateSource
     body: MandateBody
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -72,6 +78,8 @@ class Mandate:
 
         version = self.version
 
+        revoked = self.revoked
+
         source = self.source.value
 
         body = self.body.to_dict()
@@ -87,6 +95,7 @@ class Mandate:
             "current_version": current_version,
             "latest_version": latest_version,
             "version": version,
+            "revoked": revoked,
             "source": source,
             "body": body,
         })
@@ -125,6 +134,8 @@ class Mandate:
 
         version = d.pop("version")
 
+        revoked = d.pop("revoked")
+
         source = MandateSource(d.pop("source"))
 
 
@@ -143,6 +154,7 @@ class Mandate:
             current_version=current_version,
             latest_version=latest_version,
             version=version,
+            revoked=revoked,
             source=source,
             body=body,
         )

@@ -85,7 +85,8 @@ def sync_detailed(
     client: AuthenticatedClient | Client,
 
 ) -> Response[Agent | Problem]:
-    """ 
+    """ Instant and idempotent; never changes the mandate
+
     Args:
         id (UUID):
 
@@ -115,7 +116,8 @@ def sync(
     client: AuthenticatedClient | Client,
 
 ) -> Agent | Problem | None:
-    """ 
+    """ Instant and idempotent; never changes the mandate
+
     Args:
         id (UUID):
 
@@ -140,7 +142,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient | Client,
 
 ) -> Response[Agent | Problem]:
-    """ 
+    """ Instant and idempotent; never changes the mandate
+
     Args:
         id (UUID):
 
@@ -170,7 +173,8 @@ async def asyncio(
     client: AuthenticatedClient | Client,
 
 ) -> Agent | Problem | None:
-    """ 
+    """ Instant and idempotent; never changes the mandate
+
     Args:
         id (UUID):
 

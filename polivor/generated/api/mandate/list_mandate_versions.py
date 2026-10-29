@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...types import Response, UNSET
 from ... import errors
 
-from ...models.mandate import Mandate
+from ...models.mandate_version_info import MandateVersionInfo
 from ...models.problem import Problem
 from typing import cast
 from uuid import UUID
@@ -26,8 +26,8 @@ def _get_kwargs(
     
 
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/v1/mandates/{id}/resume".format(id=quote(str(id), safe=""),),
+        "method": "get",
+        "url": "/v1/mandates/{id}/versions".format(id=quote(str(id), safe=""),),
     }
 
 
@@ -35,11 +35,16 @@ def _get_kwargs(
 
 
 
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Mandate | Problem | None:
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Problem | list[MandateVersionInfo] | None:
     if response.status_code == 200:
-        response_200 = Mandate.from_dict(response.json())
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in (_response_200):
+            response_200_item = MandateVersionInfo.from_dict(response_200_item_data)
 
 
+
+            response_200.append(response_200_item)
 
         return response_200
 
@@ -64,20 +69,13 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 
         return response_404
 
-    if response.status_code == 409:
-        response_409 = Problem.from_dict(response.json())
-
-
-
-        return response_409
-
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Mandate | Problem]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[Problem | list[MandateVersionInfo]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -91,8 +89,9 @@ def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
 
-) -> Response[Mandate | Problem]:
-    """ 
+) -> Response[Problem | list[MandateVersionInfo]]:
+    """ Every version, newest first, with whether it is in force and whether it was revoked
+
     Args:
         id (UUID):
 
@@ -101,7 +100,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Mandate | Problem]
+        Response[Problem | list[MandateVersionInfo]]
      """
 
 
@@ -121,8 +120,9 @@ def sync(
     *,
     client: AuthenticatedClient | Client,
 
-) -> Mandate | Problem | None:
-    """ 
+) -> Problem | list[MandateVersionInfo] | None:
+    """ Every version, newest first, with whether it is in force and whether it was revoked
+
     Args:
         id (UUID):
 
@@ -131,7 +131,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Mandate | Problem
+        Problem | list[MandateVersionInfo]
      """
 
 
@@ -146,8 +146,9 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
 
-) -> Response[Mandate | Problem]:
-    """ 
+) -> Response[Problem | list[MandateVersionInfo]]:
+    """ Every version, newest first, with whether it is in force and whether it was revoked
+
     Args:
         id (UUID):
 
@@ -156,7 +157,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Mandate | Problem]
+        Response[Problem | list[MandateVersionInfo]]
      """
 
 
@@ -176,8 +177,9 @@ async def asyncio(
     *,
     client: AuthenticatedClient | Client,
 
-) -> Mandate | Problem | None:
-    """ 
+) -> Problem | list[MandateVersionInfo] | None:
+    """ Every version, newest first, with whether it is in force and whether it was revoked
+
     Args:
         id (UUID):
 
@@ -186,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Mandate | Problem
+        Problem | list[MandateVersionInfo]
      """
 
 

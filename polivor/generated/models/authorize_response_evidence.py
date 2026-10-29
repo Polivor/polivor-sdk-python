@@ -21,8 +21,7 @@ T = TypeVar("T", bound="AuthorizeResponseEvidence")
 
 @_attrs_define
 class AuthorizeResponseEvidence:
-    """ Absent on simulate
-
+    """ 
         Attributes:
             id (UUID):
             seq (int):

@@ -10,7 +10,6 @@ from ..types import UNSET, Unset
 
 from ..models.agent_status import AgentStatus
 from ..types import UNSET, Unset
-from typing import cast
 from uuid import UUID
 
 
@@ -29,18 +28,16 @@ class Agent:
             id (UUID):
             name (str):
             principal_id (UUID):
-            owner_email (str):
+            owner_person_id (UUID):
             status (AgentStatus):
-            versions (list[str]):
             agent_key (str | Unset): Shown once, on agent creation only
      """
 
     id: UUID
     name: str
     principal_id: UUID
-    owner_email: str
+    owner_person_id: UUID
     status: AgentStatus
-    versions: list[str]
     agent_key: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -55,13 +52,9 @@ class Agent:
 
         principal_id = str(self.principal_id)
 
-        owner_email = self.owner_email
+        owner_person_id = str(self.owner_person_id)
 
         status = self.status.value
-
-        versions = self.versions
-
-
 
         agent_key = self.agent_key
 
@@ -72,9 +65,8 @@ class Agent:
             "id": id,
             "name": name,
             "principal_id": principal_id,
-            "owner_email": owner_email,
+            "owner_person_id": owner_person_id,
             "status": status,
-            "versions": versions,
         })
         if agent_key is not UNSET:
             field_dict["agent_key"] = agent_key
@@ -98,14 +90,14 @@ class Agent:
 
 
 
-        owner_email = d.pop("owner_email")
+        owner_person_id = UUID(d.pop("owner_person_id"))
+
+
+
 
         status = AgentStatus(d.pop("status"))
 
 
-
-
-        versions = cast(list[str], d.pop("versions"))
 
 
         agent_key = d.pop("agent_key", UNSET)
@@ -114,9 +106,8 @@ class Agent:
             id=id,
             name=name,
             principal_id=principal_id,
-            owner_email=owner_email,
+            owner_person_id=owner_person_id,
             status=status,
-            versions=versions,
             agent_key=agent_key,
         )
 

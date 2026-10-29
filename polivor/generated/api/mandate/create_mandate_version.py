@@ -115,7 +115,9 @@ def sync_detailed(
     body: MandateBody,
 
 ) -> Response[Mandate | Problem]:
-    """ Create version n+1 (versions are immutable)
+    """ Create the next version. Only the validity dates changed gives the next minor version (2.1 to 2.2);
+    anything else the next major (2.1 to 3.0). The same body is refused (409 MANDATE_UNCHANGED).
+    Versions are immutable.
 
     Args:
         id (UUID):
@@ -151,7 +153,9 @@ def sync(
     body: MandateBody,
 
 ) -> Mandate | Problem | None:
-    """ Create version n+1 (versions are immutable)
+    """ Create the next version. Only the validity dates changed gives the next minor version (2.1 to 2.2);
+    anything else the next major (2.1 to 3.0). The same body is refused (409 MANDATE_UNCHANGED).
+    Versions are immutable.
 
     Args:
         id (UUID):
@@ -182,7 +186,9 @@ async def asyncio_detailed(
     body: MandateBody,
 
 ) -> Response[Mandate | Problem]:
-    """ Create version n+1 (versions are immutable)
+    """ Create the next version. Only the validity dates changed gives the next minor version (2.1 to 2.2);
+    anything else the next major (2.1 to 3.0). The same body is refused (409 MANDATE_UNCHANGED).
+    Versions are immutable.
 
     Args:
         id (UUID):
@@ -218,7 +224,9 @@ async def asyncio(
     body: MandateBody,
 
 ) -> Mandate | Problem | None:
-    """ Create version n+1 (versions are immutable)
+    """ Create the next version. Only the validity dates changed gives the next minor version (2.1 to 2.2);
+    anything else the next major (2.1 to 3.0). The same body is refused (409 MANDATE_UNCHANGED).
+    Versions are immutable.
 
     Args:
         id (UUID):

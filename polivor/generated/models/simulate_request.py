@@ -28,17 +28,18 @@ T = TypeVar("T", bound="SimulateRequest")
 class SimulateRequest:
     """ 
         Attributes:
-            agent_version (str):
-            mandate_id (UUID):
             action (Action): Unknown fields are ignored and never influence the decision.
+            agent_id (UUID):
+            agent_build (str | Unset): Informational label of the agent build or model. Stored in the decision and the
+                evidence; it never changes an outcome.
             signals (Signals | Unset): Agent-supplied; may only be used in forbid rules (signals tighten, never loosen).
                 Unknown fields are ignored.
             policy_version (int | Unset): Preview this policy version (a draft before publishing). Default: the active one.
      """
 
-    agent_version: str
-    mandate_id: UUID
     action: Action
+    agent_id: UUID
+    agent_build: str | Unset = UNSET
     signals: Signals | Unset = UNSET
     policy_version: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -50,11 +51,11 @@ class SimulateRequest:
     def to_dict(self) -> dict[str, Any]:
         from ..models.action import Action # noqa: PLC0415
         from ..models.signals import Signals # noqa: PLC0415
-        agent_version = self.agent_version
-
-        mandate_id = str(self.mandate_id)
-
         action = self.action.to_dict()
+
+        agent_id = str(self.agent_id)
+
+        agent_build = self.agent_build
 
         signals: dict[str, Any] | Unset = UNSET
         if not isinstance(self.signals, Unset):
@@ -66,10 +67,11 @@ class SimulateRequest:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({
-            "agent_version": agent_version,
-            "mandate_id": mandate_id,
             "action": action,
+            "agent_id": agent_id,
         })
+        if agent_build is not UNSET:
+            field_dict["agent_build"] = agent_build
         if signals is not UNSET:
             field_dict["signals"] = signals
         if policy_version is not UNSET:
@@ -84,17 +86,17 @@ class SimulateRequest:
         from ..models.action import Action # noqa: PLC0415
         from ..models.signals import Signals # noqa: PLC0415
         d = dict(src_dict)
-        agent_version = d.pop("agent_version")
-
-        mandate_id = UUID(d.pop("mandate_id"))
-
-
-
-
         action = Action.from_dict(d.pop("action"))
 
 
 
+
+        agent_id = UUID(d.pop("agent_id"))
+
+
+
+
+        agent_build = d.pop("agent_build", UNSET)
 
         _signals = d.pop("signals", UNSET)
         signals: Signals | Unset
@@ -109,9 +111,9 @@ class SimulateRequest:
         policy_version = d.pop("policy_version", UNSET)
 
         simulate_request = cls(
-            agent_version=agent_version,
-            mandate_id=mandate_id,
             action=action,
+            agent_id=agent_id,
+            agent_build=agent_build,
             signals=signals,
             policy_version=policy_version,
         )
