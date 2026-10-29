@@ -29,15 +29,15 @@ T = TypeVar("T", bound="AuthorizeResponse")
 
 @_attrs_define
 class AuthorizeResponse:
-    """ The answer to an agent. It has no reasons, no checks and no policy version (ADR-025); a person sees those through
-    the admin key, the console or the evidence.
+    """ The answer to an agent. It has no reasons, no checks and no policy version; a person sees those through the admin
+    key, the console or the evidence.
 
         Attributes:
             decision_id (UUID):
             outcome (AuthorizeResponseOutcome):
             evidence (AuthorizeResponseEvidence):
-            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
-                and each sentence says what to do, never why.
+            denial (Denial | Unset): What an agent is told when nothing was allowed. The list of codes is closed and each
+                sentence says what to do, never why.
                 `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
                 (UNAVAILABLE).
             mandate (AuthorizeResponseMandate | Unset):

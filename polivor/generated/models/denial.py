@@ -21,8 +21,8 @@ T = TypeVar("T", bound="Denial")
 
 @_attrs_define
 class Denial:
-    """ What an agent is told when nothing was allowed (ADR-025). The list of codes is closed and each sentence says what to
-    do, never why.
+    """ What an agent is told when nothing was allowed. The list of codes is closed and each sentence says what to do, never
+    why.
     `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
     (UNAVAILABLE).
 

@@ -35,8 +35,8 @@ class SimulateResponse:
             reasons (list[Any]):
             checks (list[Check]):
             policy_version (int): 0 when no policy applied
-            denial (Denial | Unset): What an agent is told when nothing was allowed (ADR-025). The list of codes is closed
-                and each sentence says what to do, never why.
+            denial (Denial | Unset): What an agent is told when nothing was allowed. The list of codes is closed and each
+                sentence says what to do, never why.
                 `retryable` is true only when sending the same request again later, with nothing else changed, may succeed
                 (UNAVAILABLE).
             mandate (SimulateResponseMandate | Unset):
