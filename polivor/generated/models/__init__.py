@@ -52,6 +52,7 @@ from .identity_provider_protocol import IdentityProviderProtocol
 from .identity_provider_required_claim import IdentityProviderRequiredClaim
 from .identity_provider_service_provider import IdentityProviderServiceProvider
 from .identity_provider_status import IdentityProviderStatus
+from .identity_provider_warnings_item import IdentityProviderWarningsItem
 from .import_ap_2_mandate_body import ImportAp2MandateBody
 from .json_rpc_message import JsonRpcMessage
 from .json_rpc_message_error import JsonRpcMessageError
@@ -74,6 +75,8 @@ from .principal import Principal
 from .principal_create import PrincipalCreate
 from .problem import Problem
 from .problem_errors_item import ProblemErrorsItem
+from .refresh_identity_provider_saml_metadata_body import RefreshIdentityProviderSamlMetadataBody
+from .replace_identity_provider_client_secret_body import ReplaceIdentityProviderClientSecretBody
 from .revoke_user_sessions_response_200 import RevokeUserSessionsResponse200
 from .signals import Signals
 from .simulate_request import SimulateRequest
@@ -143,6 +146,7 @@ __all__ = (
     "IdentityProviderRequiredClaim",
     "IdentityProviderServiceProvider",
     "IdentityProviderStatus",
+    "IdentityProviderWarningsItem",
     "ImportAp2MandateBody",
     "JsonRpcMessage",
     "JsonRpcMessageError",
@@ -165,6 +169,8 @@ __all__ = (
     "PrincipalCreate",
     "Problem",
     "ProblemErrorsItem",
+    "RefreshIdentityProviderSamlMetadataBody",
+    "ReplaceIdentityProviderClientSecretBody",
     "RevokeUserSessionsResponse200",
     "Signals",
     "SimulateRequest",
