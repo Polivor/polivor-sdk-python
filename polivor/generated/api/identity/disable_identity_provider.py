@@ -85,8 +85,9 @@ def sync_detailed(
     client: AuthenticatedClient | Client,
 
 ) -> Response[IdentityProvider | Problem]:
-    """ Stops sign-ins through this provider and ends the console sessions of the people who signed in
-    through it. Idempotent; one evidence row.
+    """ Stops sign-ins through this provider. Its domains go to another active provider that lists them.
+    Console sessions of its issuer end unless another active provider has the same issuer. Idempotent;
+    one evidence row.
 
     Args:
         id (UUID):
@@ -117,8 +118,9 @@ def sync(
     client: AuthenticatedClient | Client,
 
 ) -> IdentityProvider | Problem | None:
-    """ Stops sign-ins through this provider and ends the console sessions of the people who signed in
-    through it. Idempotent; one evidence row.
+    """ Stops sign-ins through this provider. Its domains go to another active provider that lists them.
+    Console sessions of its issuer end unless another active provider has the same issuer. Idempotent;
+    one evidence row.
 
     Args:
         id (UUID):
@@ -144,8 +146,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient | Client,
 
 ) -> Response[IdentityProvider | Problem]:
-    """ Stops sign-ins through this provider and ends the console sessions of the people who signed in
-    through it. Idempotent; one evidence row.
+    """ Stops sign-ins through this provider. Its domains go to another active provider that lists them.
+    Console sessions of its issuer end unless another active provider has the same issuer. Idempotent;
+    one evidence row.
 
     Args:
         id (UUID):
@@ -176,8 +179,9 @@ async def asyncio(
     client: AuthenticatedClient | Client,
 
 ) -> IdentityProvider | Problem | None:
-    """ Stops sign-ins through this provider and ends the console sessions of the people who signed in
-    through it. Idempotent; one evidence row.
+    """ Stops sign-ins through this provider. Its domains go to another active provider that lists them.
+    Console sessions of its issuer end unless another active provider has the same issuer. Idempotent;
+    one evidence row.
 
     Args:
         id (UUID):
