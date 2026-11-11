@@ -1,4 +1,4 @@
-openapi-python-client==0.29.1
+openapi-python-client==0.30.0
 httpx==0.28.1
 attrs==26.1.0
 python-dateutil==3.0.0
